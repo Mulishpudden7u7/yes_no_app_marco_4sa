@@ -19,6 +19,7 @@ class ChatProvider extends ChangeNotifier {
     moveScrollToBottom();
   }
 
+//el futur es una promesa
   Future<void> moveScrollToBottom() async {
     //un pequeño atraso en la animacion para garantizar que siempre
     //se vera aun cuando se envien mensajes cortos y rapido
