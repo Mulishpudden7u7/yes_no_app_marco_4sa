@@ -22,7 +22,7 @@ class HerMessageBubble extends StatelessWidget {
 
           // Separación (más bien ajuste de posición) de los mensajes
           child: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
 
             // Texto de los mensajes
             child: Text(
