@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yes_no_app_marco_4sa/config/helpers/get_yes_no_answer.dart';
 import 'package:yes_no_app_marco_4sa/domain/entities/message.dart';
 
 class ChatProvider extends ChangeNotifier {
@@ -8,12 +9,18 @@ class ChatProvider extends ChangeNotifier {
   ];
   //controlador para manejar el scroll
   final ScrollController chatScrollController = ScrollController();
+  //crear una instancia
+  final getYesNoAnswer = GetYesNoAnswer();
 
   Future<void> sendMessage(String text) async {
     if (text.trim().isNotEmpty) {
       final newMessage = Message(text: text, fromWho: FromWho.me);
       // Agrega el nuevo mensaje a la lista
       messageList.add(newMessage);
+
+      if (text.endsWith("?")) {
+        herReply();
+      }
       print("Cantidad de mensajes: ${messageList.length}");
 
       // Notifica si algo del provider cambió
@@ -37,5 +44,14 @@ class ChatProvider extends ChangeNotifier {
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeOut);
     }
+  }
+
+  Future<void> herReply() async {
+    //obtener el mensaje de la peticion
+    final herMessagge = await getYesNoAnswer.getAnswer();
+    //añadir el mensaje de goku a la lista
+    messageList.add(herMessagge);
+    notifyListeners();
+    moveScrollToBottom();
   }
 }
