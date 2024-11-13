@@ -3,20 +3,19 @@ import 'package:yes_no_app_marco_4sa/domain/entities/message.dart';
 import 'package:yes_no_app_marco_4sa/infraestructure/models/yes_no_models.dart';
 
 class GetYesNoAnswer {
-  //se crea una intancia de la clase Dio
-  //para mejorar las peticiones HTTP
+  //Se crea instancia de la clase dio
+  //Para majera las peticiones de HTTP
   final _dio = Dio();
-  //obtener las respuesta
+
+//Obtener la respuesta
   Future<Message> getAnswer() async {
-    //almacenar la peticion en una variable
-    final response = await _dio.get("https://yesno.wtf/api");
+    //Almacenar la peticion GET en una variable
+    final response = await _dio.get('https://yesno.wtf/api');
 
-    //almacenar la data de la respuesta de una variable
+//Almacenar la data de la respuesta en una variable
+    final yesNoModel = YesNoModel.fromJsonMap(response.data);
 
-    final yesNoModel = YesNoModel.fromJson(response.data);
-
-    //devolver la instancia de Message creada en el modelo
-
-    return yesNoModel.toMenssageEntity();
+//Devolver la instancia de "Message" creada en el modelo
+    return yesNoModel.toMessageEntity();
   }
 }

@@ -15,58 +15,64 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        //leading es el espacio que hay antes del título
-        //se envuenle en padding para que se haga pequeño
         leading: const Padding(
-          padding: EdgeInsets.all(4.0),
+          padding: EdgeInsets.all(5.0),
           child: CircleAvatar(
             backgroundImage: NetworkImage(
                 'https://i.blogs.es/aee3d3/gawu1m5wsaafdop/1200_800.webp'),
           ),
-        ), //avatar circular
-        title: const Text('Goku'),
-        centerTitle: true, //para forzar centrar el texto
+        ),
+        title: const Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Goku',
+              style: TextStyle(fontSize: 20),
+            ),
+            SizedBox(
+              height: 2,
+            ),
+            Text(
+              'En linea',
+              style: TextStyle(fontSize: 12, color: Colors.green),
+            )
+          ],
+        ),
       ),
       body: _ChatView(),
     );
   }
 }
 
-// El body se trabaja aquí
 class _ChatView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final chatProvider = context.watch<ChatProvider>();
-
     return SafeArea(
-      // Mueve al 'Mundo' a una zona segura
       child: Padding(
-        // Para que no estén pegados a los bordes
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           children: [
-            // Fondo del chat
             Expanded(
-                // ListView dice cuantos elementos tengo y puede cambiar, por eso no es const
                 child: ListView.builder(
-              itemCount: chatProvider.messageList.length,
-              // Como va a construir cada elemento
-              itemBuilder: (context, index) {
-                //instancia del message que sabra de quien es el mensaje
-                final message = chatProvider.messageList[index];
-                // Indica cual es el elemento que está rendirizando en este momento
-                return (message.fromWho == FromWho.hers)
-                    ? HerMessageBubble(
-                        message: message,
-                      )
-                    : MyMessageBubble(
-                        message: message,
-                      );
-              },
-            )),
+                    controller: chatProvider.chatScrollController,
+                    itemCount: chatProvider.messageList.length,
+                    itemBuilder: (context, index) {
+                      // Instancia del message qy¿ue sabra de quien es el mensaje
+                      final message = chatProvider.messageList[index];
+                      return (message.fromWho == FromWho.hers)
+                          ? HerMessageBubble(
+                              message: message,
+                            )
+                          : MyMessageBubble(
+                              message: message,
+                            );
+                    })),
 
             // Caja de texto
-            MessageFieldBox(onValue: chatProvider.sendMessage),
+            MessageFieldBox(
+              onValue: chatProvider.sendMessage,
+            ),
           ],
         ),
       ),
